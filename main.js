@@ -14,6 +14,22 @@ while (sistemaRodando) {
     
     let opcao = readline.question("Escolha uma opcao: ");
 
+    switch (opcao) {
+        case "1":
+            const nome = readline.question("Digite o nome do produto: ");               
+            const categoria = readline.question("Digite a categoria do produto: ");     
+            const preco = parseFloat(readline.question("Digite o preco do produto: "));             
+            const quantidade = parseInt(readline.question("Digite a quantidade do produto: "));
 
+            
+            console.log(`Dados informados: ${nome}, Categoria: ${categoria}, Preço: ${preco}, Quantidade: ${quantidade}`);
+            break;
+        case "0":
+            console.log("Saindo do sistema...");
+            sistemaRodando = false;
+            break;
+        default:
+            console.log("Opção inválida. Tente novamente.");
+    }       
 
 }
