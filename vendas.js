@@ -19,3 +19,29 @@ const novaVenda ={
 lista.Vendas.push(novaVenda);
 return "Venda concluida com sucesso!";
 }
+
+function historicoVendas(listaVendas) {
+if(listaVendas.length === 0) {
+    console.log ("Não existem vendas registradas!");
+return;
+}
+console.log ("Histórico de Vendas");
+listaVendas.forEach(venda => {
+    console.log("Identificacao da Venda: ${venda.idenfificacaoProduto}");
+    console.log("Data: ${venda.data}");
+    console.log("Identificacao do Produto: ${venda.identificacaoProduto}");
+    console.log("Quantidade: ${venda.quantidadeVendida}");
+    console.log("Valor Total: R$ ${venda.valorTotal}")
+});
+}
+
+function buscarVendaPorId(listaVendas, IdBuscar){
+if (idBuscar || isNan(idBuscar)){
+    return "Vanda não encontrada!";
+}
+const vendaEncontrada = listaVendas.find(venda => venda.identificacaoProduto === Number(idBuscar));
+if (!vendaEncontrada){
+    return "Venda não Encontrada!";
+}
+return vendaEncontrada;
+}
