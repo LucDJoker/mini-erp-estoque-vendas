@@ -19,10 +19,20 @@ while (sistemaRodando) {
             const nome = readline.question("Digite o nome do produto: ");               
             const categoria = readline.question("Digite a categoria do produto: ");     
             const preco = parseFloat(readline.question("Digite o preco do produto: "));             
-            const quantidade = parseInt(readline.question("Digite a quantidade do produto: "));
-
-            
+            const quantidade = parseInt(readline.question("Digite a quantidade do produto: "));         
             console.log(`Dados informados: ${nome}, Categoria: ${categoria}, Preço: ${preco}, Quantidade: ${quantidade}`);
+            break;
+        case "2":
+            console.log("Listando produtos cadastrados...");
+            break;  
+        case "3":
+            console.log("Registrando venda...");
+            break;
+        case "4":
+            console.log("Buscando produtos por categoria...");
+            break;  
+        case "5":
+            console.log("Gerando relatório geral...");
             break;
         case "0":
             console.log("Saindo do sistema...");
