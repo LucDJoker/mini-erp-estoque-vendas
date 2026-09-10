@@ -18,7 +18,7 @@ while (sistemaRodando) {
     console.log("6 - Registrar Venda");
     console.log("7 - Histórico de Vendas");
     console.log("8 - Buscar Venda");
-    console.log("9 - Relatório Avançado(Nome + Categoria)");
+    console.log("9 - Relatório Avancado(Nome + Categoria)");
     console.log("10 - Relatório Geral");
     console.log("0 - Sair do Sistema");
 
@@ -47,7 +47,7 @@ while (sistemaRodando) {
             let nomeProdutoAtualizar = readline.question("Digite o nome do produto a ser atualizado: ");
             let novoNome = readline.question("Digite o novo nome do produto: ");
             let novaCategoria = readline.question("Digite a nova categoria do produto: ");
-            let novoPreco = parseFloat(readline.question("Digite o novo preço do produto: "));
+            let novoPreco = parseFloat(readline.question("Digite o novo preco do produto: "));
             let novaQuantidade = parseInt(readline.question("Digite a nova quantidade em estoque: "));
             moduloProdutos.atualizarProduto(estoque, nomeProdutoAtualizar, novoNome, novaCategoria, novoPreco, novaQuantidade);
             break;
