@@ -1,67 +1,73 @@
-function registroVenda (identificacaoProduto, quantidadeVendida, listaEstoque, listaVendas) {
-    if (!identificacaoProduto || isNaN(quantidadeVendida) || Number(quantidadeVendida) <= 0) {
+
+let vendas = []; 
+
+function registroVenda (nomeProduto, quantidadeVendida) {
+    if (!nomeProduto || isNaN(quantidadeVendida) || Number(quantidadeVendida) <= 0) {
         return "Dados incorretos!.";
     }
-    const produto = listaEstoque.find  (p => Number(p.id) === Number(identificacaoProduto));
+    const produto = estoque.find  (p => p.nome.toLowerCase() === nomeProduto.toLowerCase());
     if (!produto){
         return " Produto nao encontrado!"
     }
-if (produto.quantidade < quantidadeVendida) {
-    return "Estoque Insuficiente!";
-}
-const novaVenda ={
-    id: listaVendas.length + 1,
-    produtoId: identificacaoProduto,
-    quantidade: quantidadeVendida,
-    valorTotal: quantidadeVendida * produto.preco,
-    data: new Date().toLocaleDateString()
-};
-listaVendas.push(novaVenda);
-return "Venda concluida com sucesso!";
+    if (produto.quantidade < quantidadeVendida) {
+        return "Estoque Insuficiente!";
+    }
+    const baixaSucesso = baixaEstoque(nomeProduto, quantidadeVendida);
+    if (baixaSucesso){
+        const novaVenda ={
+            id: vendas.length + 1,
+            produtoId: produto.nome,
+            quantidade: Number(quantidadeVendida),
+            valorTotal: quantidadeVendida * produto.preco,
+            data: new Date().toLocaleDateString()
+    };
+    vendas.push(novaVenda);
+    return "Venda concluida com sucesso!";
+    }
+return "Erro ao finalizar venda!";
 }
 
-function historicoVendas(listaVendas) {
-if(listaVendas.length === 0) {
+function historicoVendas() {
+    if(vendas.length === 0) {
     console.log ("Não existem vendas registradas!");
-return;
+    return;
 }
 
 console.log ("Histórico de Vendas");
-listaVendas.forEach(venda => {
+vendas.forEach(venda => {
     console.log(`Identificacao da Venda: ${venda.id}`);
     console.log(`Data: ${venda.data}`);
-    console.log(`Identificacao do Produto: ${venda.produtoId}`);
+    console.log(`Identificacao do Produto: ${venda.produtoNome}`);
     console.log(`Quantidade: ${venda.quantidade}`);
-    console.log(`Valor Total: R$ ${venda.valorTotal}`)
-});
+    console.log(`Valor Total: R$ ${venda.valorTotal.toFixed(2)}`)
+    });
 }
 
-function buscarVenda(listaVendas, idBuscar){
-if (!idBuscar || isNaN(idBuscar)){
-    return "Venda não encontrada!";
+function buscarVenda(nomeBuscar){
+    if (!nomeBuscar || isNaN(nomeBuscar)){
+        return "Venda não encontrada!";
 }
-const vendaEncontrada = listaVendas.find(venda => venda.id === Number(idBuscar));
-if (!vendaEncontrada){
-    return "Venda não Encontrada!";
+    const vendaEncontrada = vendas.find(venda => venda.id === Number(nomeBuscar));
+    if (!vendaEncontrada){
+            return "Venda não Encontrada!";
 }
-return vendaEncontrada;
+    return vendaEncontrada;
 }
 
-function baixaEstoque(identificacaoProduto, quantidadeVendida, listaEstoque){
-if (!identificacaoProduto || isNaN(quantidadeVendida) || Number(quantidadeVendida) <= 0) {
-        console.log("ID incorreto ou quantidade incorreta!");
+function baixaEstoque(nomeProduto, quantidadeVendida){
+    if (!nomeProduto || isNaN(quantidadeVendida) || Number(quantidadeVendida) <= 0) {
+        console.log("Nome incorreto ou quantidade incorreta!");
         return false;
 }
-const produto = listaEstoque.find (produto => produto.id === Number(identificacaoProduto));
-if (!produto) {
-    console.log("Produto não encontrado")
-    return false;
+    const produto = estoque.find (p => p.nome.toLowerCase() === nomeProduto.toLowerCase());
+    if (!produto) {
+        console.log("Produto não encontrado")
+        return false;
 }
-if (produto.quantidade < Number(quantidadeVendida)) {
-    console.log ("Quantidade insuficiente em estoque");
-    return false;
+    if (produto.quantidade < Number(quantidadeVendida)) {
+        console.log ("Quantidade insuficiente em estoque");
+        return false;
 }
-produto.quantidade -= Number(quantidadeVendida);
-    console.log("Estoque atualizado com sucesso")
-    return true
+    produto.quantidade -= Number(quantidadeVendida);
+        return true
 }
