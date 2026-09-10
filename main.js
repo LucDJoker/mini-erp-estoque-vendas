@@ -1,19 +1,25 @@
-const readline = require( 'readline-sync')
-require("./produtos")
-require("./vendas")
-require("./relatorios")
-let estoque = []
-let vendas = []
+const readline = require( 'readline-sync');
+const moduloProdutos = require('./produtos.js');
+const moduloVendas = require('./vendas.js');
+const moduloRelatorios = require('./relatorios.js');
 
-let sistemaRodando = true
+let estoque = [];
+let vendas = [];
+
+let sistemaRodando = true;
 
 while (sistemaRodando) {
     console.log("\n ===== Mini Erp ===== \n");
     console.log("1 - Cadastrar Produto");
     console.log("2 - Listar Produtos");
-    console.log("3 - Registrar Venda");
-    console.log("4 - Busca por Categoria");
-    console.log("5 - Relatório Geral");
+    console.log("3 - Buscar Produto(Simples)");
+    console.log("4 - Atualizar Produto");
+    console.log("5 - Remover Produto");
+    console.log("6 - Registrar Venda");
+    console.log("7 - Histórico de Vendas");
+    console.log("8 - Buscar Venda");
+    console.log("9 - Relatório Avançado(Nome + Categoria)");
+    console.log("10 - Relatório Geral");
     console.log("0 - Sair do Sistema");
 
     
@@ -21,30 +27,66 @@ while (sistemaRodando) {
 
     switch (opcao) {
         case "1":
-            const nome = readline.question("Digite o nome do produto: ");               
-            const categoria = readline.question("Digite a categoria do produto: ");     
-            const preco = parseFloat(readline.question("Digite o preco do produto: "));             
-            const quantidade = parseInt(readline.question("Digite a quantidade do produto: "));         
-            console.log(`Dados informados: ${nome}, Categoria: ${categoria}, Preço: ${preco}, Quantidade: ${quantidade}`);
+            console.log("\n-- Cadastrando produto --");
+            let nome = readline.question("Digite o nome do produto: ");               
+            let categoria = readline.question("Digite a categoria do produto: ");
+            let preco = parseFloat(readline.question("Digite o preco do produto: "));
+            let quantidade = parseInt(readline.question("Digite a quantidade em estoque: "));
+            moduloProdutos.cadastrarProduto(estoque, nome, categoria, preco, quantidade);
             break;
         case "2":
-            console.log("Listando produtos cadastrados...");
+            moduloProdutos.listarProdutos(estoque);
             break;  
         case "3":
-            console.log("Registrando venda...");
+            console.log("\n-- Buscando Produto --");
+            let nomeBusca = readline.question("Digite o nome do produto a ser buscado: ");
+            moduloProdutos.buscarProduto(estoque, nomeBusca);
             break;
         case "4":
-            console.log("Buscando produtos por categoria...");
-            break;  
+            console.log("\n-- Atualizar produto --");
+            let nomeProdutoAtualizar = readline.question("Digite o nome do produto a ser atualizado: ");
+            let novoNome = readline.question("Digite o novo nome do produto: ");
+            let novaCategoria = readline.question("Digite a nova categoria do produto: ");
+            let novoPreco = parseFloat(readline.question("Digite o novo preço do produto: "));
+            let novaQuantidade = parseInt(readline.question("Digite a nova quantidade em estoque: "));
+            moduloProdutos.atualizarProduto(estoque, nomeProdutoAtualizar, novoNome, novaCategoria, novoPreco, novaQuantidade);
+            break;
         case "5":
-            console.log("Gerando relatório geral...");
+            let nomeProdutoRemover = readline.question("Digite o nome do produto a ser removido: ");
+            moduloProdutos.removerProduto(estoque, nomeProdutoRemover);
+            break;  
+        case "6":
+            console.log("\n-- Registrando venda --");
+            let nomeProdutoVenda = readline.question("Digite o nome do produto vendido: ");
+            let quantidadeVendidaVenda = parseInt(readline.question("Digite a quantidade vendida: "));
+            let resultadoVendaVenda = moduloVendas.registroVenda(estoque, vendas, nomeProdutoVenda, quantidadeVendidaVenda);
+            console.log(resultadoVendaVenda);
+            break;
+            
+        case "7":
+            moduloVendas.historicoVendas(vendas);
+            break;
+        case "8":
+            let idvenda = parseInt(readline.question("Digite o ID da venda a ser buscada: "));
+            let vendaEncontrada = moduloVendas.buscarVenda(vendas, idvenda);
+            console.log(vendaEncontrada);
+            break;
+        case "9":
+            console.log("\n-- Busca Avancada --");
+            console.log("(deixe em branco para buscar todos os produtos)");
+            let busNome = readline.question("Nome contem:").trim();
+            let busCategoria = readline.question("Categoria contem:").trim();
+            moduloRelatorios.buscaAvancada(estoque, busNome, busCategoria);
+            break;
+        case "10":
+            moduloRelatorios.relatorioGeral(estoque, vendas);
             break;
         case "0":
-            console.log("Saindo do sistema...");
+            console.log("Saindo do sistema... Ate logo!");
             sistemaRodando = false;
             break;
         default:
-            console.log("Opção inválida. Tente novamente.");
+            console.log("Opcao invalida. Tente novamente.");
     }       
 
 }

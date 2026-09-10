@@ -1,26 +1,24 @@
-let estoque = [];
-
-function cadastrarProduto(nome, categoria, preco, quantidade) {
-    if (!nome || !categoria || isNaN(preco) || isNaN(quantidade) || preco <= 0 || quantidade < 0) {
-        console.log("Dados inválidos!");
+function cadastrarProduto(estoque, nome, categoria, preco, quantidade) {
+    if (!nome || nome.trim() === "" || !categoria || categoria.trim() === "" || isNaN(preco) || preco <= 0 || isNaN(quantidade) || quantidade < 0) {
+        console.log("Dados incorretos! Produto nao cadastrado.");
         return;
     }
-    const produtoExistente = estoque.find(produto => produto.nome.toLowerCase() === nome.toString().toLowerCase());
+    const produtoExistente = estoque.find(produto => produto.nome.toLowerCase() === nome.trim().toLowerCase());
     if (produtoExistente) {
-        console.log("Produto Existente!");
+        console.log("Erro: Produto ja Existente!");
         return;
     }
     estoque.push({ 
-        nome: nome.toString(), 
-        categoria: categoria.toString(), 
-        preco: preco.toString(), 
-        quantidade: quantidade.toString() 
+        nome: nome.trim(), 
+        categoria: categoria.trim(), 
+        preco: Number(preco), 
+        quantidade: Number(quantidade) 
     });
     console.log("Produto cadastrado com sucesso!");
 }
 
-function listarProdutos() {
-    if (estoque.length ===0){
+function listarProdutos(estoque) {
+    if (estoque.length === 0){
         console.log("Não há produtos em estoque")
         return;
     }
@@ -35,8 +33,8 @@ function listarProdutos() {
     }
 
 }
-function buscarProduto(nome) {
-    if (!nome){
+function buscarProduto(estoque, nome) {
+    if (!nome || nome.trim() === "") {
         console.log ("Produto não encontrado")
         return null;
     }
@@ -48,19 +46,24 @@ function buscarProduto(nome) {
     console.log("Produto encontrado!");
     return produtoEncontrado;   
 }
-function atualizarProduto(nome, novoNome, novaCategoria, novoPreco, novaQuantidade) {
-    const produtoEncontrado = estoque.find(produto => produto.nome.toLowerCase() === nome.toLowerCase());   
+function atualizarProduto(estoque, nome, novoNome, novaCategoria, novoPreco, novaQuantidade) {
+    if (!nome || nome.trim() === "" || !novoNome || novoNome.trim() === "" || !novaCategoria || novaCategoria.trim() === "" || isNaN(novoPreco) || novoPreco <= 0 || isNaN(novaQuantidade) || novaQuantidade < 0) {
+        console.log("Dados incorretos! Produto nao atualizado.");
+        return;
+    }
+    const produtoEncontrado = estoque.find(produto => produto.nome.toLowerCase() === nome.trim().toLowerCase());
     if (!produtoEncontrado) {
         console.log("Produto não encontrado!");
         return;
-    }
-    produtoEncontrado.nome = novoNome;
-    produtoEncontrado.categoria = novaCategoria;
-    produtoEncontrado.preco = novoPreco;
-    produtoEncontrado.quantidade = novaQuantidade;
+    }   
+
+    produtoEncontrado.nome = novoNome.trim();
+    produtoEncontrado.categoria = novaCategoria.trim();
+    produtoEncontrado.preco = Number(novoPreco);
+    produtoEncontrado.quantidade = Number(novaQuantidade);
     console.log("Produto atualizado com sucesso!");
 }
-function removerProduto(nome) {
+function removerProduto(estoque, nome) {
     const index = estoque.findIndex(produto => produto.nome.toLowerCase() === nome.toLowerCase());
     if (index === -1) {
         console.log("Produto não encontrado!");
@@ -69,4 +72,4 @@ function removerProduto(nome) {
     estoque.splice(index, 1);
     console.log("Produto removido com sucesso!");
 }
-
+module.exports = { cadastrarProduto, listarProdutos, buscarProduto, atualizarProduto, removerProduto };

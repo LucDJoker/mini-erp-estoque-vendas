@@ -1,9 +1,6 @@
-
-let vendas = []; 
-
-function registroVenda (nomeProduto, quantidadeVendida) {
-    if (!nomeProduto || isNaN(quantidadeVendida) || Number(quantidadeVendida) <= 0) {
-        return "Dados incorretos!.";
+function registroVenda (estoque, vendas, nomeProduto, quantidadeVendida) {
+    if (!nomeProduto || nomeProduto.trim() === "" || isNaN(quantidadeVendida) || quantidadeVendida <= 0) {
+        return "Nome do produto ou quantidade inválidos!";  
     }
     const produto = estoque.find  (p => p.nome.toLowerCase() === nomeProduto.toLowerCase());
     if (!produto){
@@ -12,11 +9,11 @@ function registroVenda (nomeProduto, quantidadeVendida) {
     if (produto.quantidade < quantidadeVendida) {
         return "Estoque Insuficiente!";
     }
-    const baixaSucesso = baixaEstoque(nomeProduto, quantidadeVendida);
+    const baixaSucesso = baixaEstoque(estoque, nomeProduto, quantidadeVendida);
     if (baixaSucesso){
         const novaVenda ={
             id: vendas.length + 1,
-            produtoId: produto.nome,
+            produtoNome: produto.nome,
             quantidade: Number(quantidadeVendida),
             valorTotal: quantidadeVendida * produto.preco,
             data: new Date().toLocaleDateString()
@@ -27,7 +24,7 @@ function registroVenda (nomeProduto, quantidadeVendida) {
 return "Erro ao finalizar venda!";
 }
 
-function historicoVendas() {
+function historicoVendas(vendas) {
     if(vendas.length === 0) {
     console.log ("Não existem vendas registradas!");
     return;
@@ -43,7 +40,7 @@ vendas.forEach(venda => {
     });
 }
 
-function buscarVenda(nomeBuscar){
+function buscarVenda(vendas, nomeBuscar){
     if (!nomeBuscar || isNaN(nomeBuscar)){
         return "Venda não encontrada!";
 }
@@ -54,7 +51,7 @@ function buscarVenda(nomeBuscar){
     return vendaEncontrada;
 }
 
-function baixaEstoque(nomeProduto, quantidadeVendida){
+function baixaEstoque(estoque, nomeProduto, quantidadeVendida){
     if (!nomeProduto || isNaN(quantidadeVendida) || Number(quantidadeVendida) <= 0) {
         console.log("Nome incorreto ou quantidade incorreta!");
         return false;
@@ -71,3 +68,5 @@ function baixaEstoque(nomeProduto, quantidadeVendida){
     produto.quantidade -= Number(quantidadeVendida);
         return true
 }
+
+module.exports = { registroVenda, historicoVendas, buscarVenda, baixaEstoque };
