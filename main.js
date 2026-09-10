@@ -1,4 +1,9 @@
 const readline = require( 'readline-sync')
+require("./produtos")
+require("./vendas")
+require("./relatorios")
+let estoque = []
+let vendas = []
 
 let sistemaRodando = true
 
